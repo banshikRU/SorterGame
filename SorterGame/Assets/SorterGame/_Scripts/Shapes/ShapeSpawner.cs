@@ -1,51 +1,89 @@
-﻿using UnityEngine;
-using Zenject;
-using System.Collections;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SorterGame._Scripts.Settings;
-using SorterGame._Scripts.Shapes;
+using UnityEngine;
+using Zenject;
+using Random = UnityEngine.Random;
 
-public class ShapeSpawner : MonoBehaviour
+namespace SorterGame._Scripts.Shapes
 {
-    [SerializeField] private Transform[] lines; // 3 лайна
-    [SerializeField] private GameSettings gameSettings;
-
-    private ShapeFactory _factory;
-
-    [Inject]
-    public void Construct(ShapeFactory factory)
+    public class ShapeSpawner: IInitializable, IDisposable
     {
-        _factory = factory;
-    }
+        private readonly IFactory<ShapeType, Transform, ShapeView> _factory;
+        private readonly GameSettings _settings;
+        private readonly EventBus.EventBus _eventBus;
+        private GameStatsService _gameStatsService;
+        private CancellationTokenSource _cancellation;
+        private Transform[] _spawnPoints;
 
-    private void Start()
-    {
-        StartCoroutine(SpawnRoutine());
-    }
-
-    private IEnumerator SpawnRoutine()
-    {
-        int total = Random.Range(
-            gameSettings.ShapeCountRange.x,
-            gameSettings.ShapeCountRange.y + 1
-        );
-
-        for (int i = 0; i < total; i++)
+        public ShapeSpawner(
+            IFactory<ShapeType, Transform, ShapeView> factory,
+            GameSettings settings,
+            EventBus.EventBus eventBus,
+            Transform[] spawnPoints,
+            GameStatsService gameStatsService
+            )
         {
-            var delay = Random.Range(
-                gameSettings.SpawnDelayRange.x,
-                gameSettings.SpawnDelayRange.y
-            );
-            yield return new WaitForSeconds(delay);
+            _gameStatsService = gameStatsService;
+            _factory = factory;
+            _settings = settings;
+            _eventBus = eventBus;
+            _spawnPoints = spawnPoints;
 
-            var shapeType = (ShapeType)Random.Range(0, 4);
-            var line = lines[Random.Range(0, lines.Length)];
-            var speed = Random.Range(
-                gameSettings.SpeedRange.x,
-                gameSettings.SpeedRange.y
-            );
+            _eventBus.OnGameEndStateChanged += CancelSpawning;
+        }
+        
+        public void Dispose()
+        {
+            _cancellation?.Cancel();
+            _cancellation?.Dispose();
+            _cancellation = null;
+        }
+        
+        public void Initialize()
+        {
+            StartSpawning();
+        }
+        private void StartSpawning()
+        {
+            Debug.Log("Initializing shape spawner");
+            _cancellation = new CancellationTokenSource();
+            _ = SpawnAsync(_cancellation.Token);
+        }
 
-            var shape = _factory.Create(shapeType, line);
-            shape.Init(shapeType, speed);
+        private async Task SpawnAsync(CancellationToken token)
+        {
+            int total = Random.Range(_settings.ShapeCountRange.x, _settings.ShapeCountRange.y + 1);
+            _gameStatsService.SetRemainingShapes(total);
+
+            for (int i = 0; i < total; i++)
+            {
+                float delay = Random.Range(_settings.SpawnDelayRange.x, _settings.SpawnDelayRange.y);
+                try
+                {
+                    await Task.Delay((int)(delay * 1000), token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+
+                if (!Application.isPlaying || token.IsCancellationRequested)
+                    break;
+
+                var type = (ShapeType)UnityEngine.Random.Range(0, 4);
+                var line = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)];
+                var speed = UnityEngine.Random.Range(_settings.SpeedRange.x, _settings.SpeedRange.y);
+
+                var shape = _factory.Create(type, line);
+                shape.Init(type, speed);
+            }
+        }
+
+        private void CancelSpawning(bool isWin)
+        {
+            _cancellation?.Cancel();
         }
     }
 }

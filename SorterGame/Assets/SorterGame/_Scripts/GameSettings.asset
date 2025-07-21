@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9032760fd619d59478138b197175e963, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  ShapeCountRange: {x: 0, y: 0}
-  SpawnDelayRange: {x: 0, y: 0}
-  SpeedRange: {x: 0, y: 0}
-  PlayerHealth: 0
+  ShapeCountRange: {x: 10, y: 25}
+  SpawnDelayRange: {x: 2, y: 5}
+  SpeedRange: {x: 3, y: 10}
+  PlayerHealth: 1

@@ -17,7 +17,9 @@ namespace SorterGame._Scripts.Shapes
         public ShapeView Create(ShapeType type, Transform parent)
         {
             var prefab = _library.GetPrefab(type);
-            return _container.InstantiatePrefabForComponent<ShapeView>(prefab, parent);
+            var shape = _container.InstantiatePrefabForComponent<ShapeView>(prefab, parent);
+            _container.Inject(shape); 
+            return shape;
         }
     }
 }
