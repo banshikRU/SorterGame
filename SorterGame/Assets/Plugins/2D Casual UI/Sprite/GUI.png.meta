@@ -457,7 +457,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemyHealthUI
+      name: GUI_7
       rect:
         serializedVersion: 2
         x: 958
@@ -545,7 +545,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ButtonBackgroundUI
+      name: GUI_11
       rect:
         serializedVersion: 2
         x: 2192
@@ -743,7 +743,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HeartUI
+      name: GUI_20
       rect:
         serializedVersion: 2
         x: 50
@@ -919,7 +919,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BackgroundUI
+      name: GUI_28
       rect:
         serializedVersion: 2
         x: 2166
@@ -1183,7 +1183,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GUI_45
+      name: ScoreIcon
       rect:
         serializedVersion: 2
         x: 562
@@ -1670,7 +1670,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b11c52e03e68f7b49bbe162e72d47e35
+    spriteID: cfb08a91f0c17ff45a523b52c0556659
     internalID: 0
     vertices: []
     indices: 
@@ -1680,12 +1680,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BackgroundUI: 21300056
-      ButtonBackgroundUI: 21300022
-      EnemyHealthUI: 21300014
       GUI_0: 21300000
       GUI_1: 21300002
       GUI_10: 21300020
+      GUI_11: 21300022
       GUI_12: 21300024
       GUI_13: 21300026
       GUI_14: 21300028
@@ -1695,6 +1693,7 @@ TextureImporter:
       GUI_18: 21300036
       GUI_19: 21300038
       GUI_2: 21300004
+      GUI_20: 21300040
       GUI_21: 21300042
       GUI_22: 21300044
       GUI_23: 21300046
@@ -1702,6 +1701,7 @@ TextureImporter:
       GUI_25: 21300050
       GUI_26: 21300052
       GUI_27: 21300054
+      GUI_28: 21300056
       GUI_29: 21300058
       GUI_3: 21300006
       GUI_30: 21300060
@@ -1715,7 +1715,6 @@ TextureImporter:
       GUI_42: 21300074
       GUI_43: 21300076
       GUI_44: 21300078
-      GUI_45: 21300080
       GUI_46: 21300082
       GUI_47: 21300084
       GUI_48: 21300086
@@ -1739,9 +1738,10 @@ TextureImporter:
       GUI_66: 21300118
       GUI_67: 21300120
       GUI_68: 21300122
+      GUI_7: 21300014
       GUI_8: 21300016
       GUI_9: 21300018
-      HeartUI: 21300040
+      ScoreIcon: 21300080
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
